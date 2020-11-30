@@ -16,20 +16,40 @@ Header file for a fantasy base character class
 
 using namespace std;
 
-class Character {
-    public:
-        Character();
-        Character(string _name, int hitDice, int level);
-        ~Character();
-        virtual int Attack();
-        string GetName();
-        void TakeDamage(int damage);
-        int GetHP();
-    protected:
-        string name;
-        int damage;
-    private:
-        int hitPoints;
+enum CharacterStatus
+{
+    ALIVE,
+    UNCONSCIOUS,
+    DEAD
+};
+
+class Character
+{
+    //friend CharacterBuilder;
+public:
+    Character();
+    Character(string _name, int hitDice, int level);
+    ~Character();
+    virtual int Attack();
+    string GetName();
+    void TakeDamage(int damage);
+    int GetHP();
+    int GetMaxHP();
+    string GetCharacterStatus();
+protected:
+    string name;
+    int damage;
+    CharacterStatus status;
+    // Attributes
+    int str_;
+    int dex_;
+    int con_;
+    int int_;
+    int wis_;
+    int cha_;
+private:
+    int hitPoints;
+    int maxHitPoints;
 };
 
 #endif

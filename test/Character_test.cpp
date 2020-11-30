@@ -34,7 +34,7 @@ protected:
 };
 
 
-// Uses test fixture to test generic character creation.
+// Test base character creation.
 TEST_F(CharacterTest, createsGenericCharacter)
 {
     string expectedStr = "Generic Character";
@@ -44,7 +44,7 @@ TEST_F(CharacterTest, createsGenericCharacter)
     EXPECT_EQ(c1->GetHP(), expectedHP);
 }
 
-// Uses test fixture to test customized character attributes.
+// Test a simple, custom character.
 TEST_F(CharacterTest, createsCustomCharacterWithCorrectHitDice)
 {
     string expectedStr = "Test";
@@ -52,9 +52,12 @@ TEST_F(CharacterTest, createsCustomCharacterWithCorrectHitDice)
 
     int expectedMinimumHitPoints = 5;
     EXPECT_GE(c2->GetHP(), expectedMinimumHitPoints);
+
+    string expectedStatus = "Alive";
+    EXPECT_EQ(c2->GetCharacterStatus(), expectedStatus);
 }
 
-// Uses test fixture to apply damage to character object.
+// Test applying damage to character object.
 TEST_F(CharacterTest, appliesDamageToCharacter)
 {
     int c2MaxHP = c2->GetHP();
@@ -63,4 +66,15 @@ TEST_F(CharacterTest, appliesDamageToCharacter)
     c2->TakeDamage(3);
 
     EXPECT_EQ(c2->GetHP(), expectedRemainingHP);
+    EXPECT_LT(c2->GetHP(), c2->GetMaxHP());
+}
+
+// Test unconscious and dying conditions
+TEST_F(CharacterTest, setsNegativeHPToZero)
+{
+    c1->TakeDamage(10);
+    EXPECT_EQ(c1->GetHP(), 0);
+
+    string expectedStatus = "Unconscious";
+    EXPECT_EQ(c1->GetCharacterStatus(), expectedStatus);
 }

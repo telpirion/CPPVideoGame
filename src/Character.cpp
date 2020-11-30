@@ -9,36 +9,76 @@ Implementation file for a fantasy base class
 #include "Character.h"
 #define DEFAULT_NAME "Generic Character"
 #define DEFAULT_HIT_POINTS 1
+#define DEFAULT_ATTRIBUTE 10
 
-Character::Character() {
+Character::Character()
+{
     this->name = DEFAULT_NAME;
     this->hitPoints = DEFAULT_HIT_POINTS;
+    this->status = ALIVE;
 }
 
-Character::Character(string _name, int hitDice, int level) {
+Character::Character(string _name, int hitDice, int level) : Character()
+{
     this->name = _name;
-    this->hitPoints = 0;
 
     srand(time(NULL));
-    for (int i = 0; i < level; i++) {
+    for (int i = 0; i < level; i++)
+    {
         this->hitPoints += rand() % hitDice;
+        this->maxHitPoints = this->hitPoints;
     }
 }
 
 Character::~Character() {}
 
-int Character::Attack() {
+int Character::Attack()
+{
     return this->damage;
 }
 
-string Character::GetName() {
+string Character::GetName()
+{
     return this->name;
 }
 
-void Character::TakeDamage(int damage) {
+void Character::TakeDamage(int damage)
+{
     this->hitPoints -= damage;
+
+    if (this->hitPoints < 0)
+    {
+        this->hitPoints = 0;
+        this->status = UNCONSCIOUS;
+    }
 }
 
-int Character::GetHP() {
+int Character::GetHP()
+{
     return this->hitPoints;
+}
+
+int Character::GetMaxHP()
+{
+    return this->maxHitPoints;
+}
+
+string Character::GetCharacterStatus()
+{
+    string statusString = "";
+
+    switch (this->status)
+    {
+        case DEAD:
+            statusString = "Dead";
+            break;
+        case UNCONSCIOUS:
+            statusString = "Unconscious";
+            break;
+        case ALIVE:
+        default:
+            statusString = "Alive";
+            break;
+    }
+    return statusString;
 }
