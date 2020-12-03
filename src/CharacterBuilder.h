@@ -10,8 +10,10 @@ Header file for a builder class for the Character class
 
 #include <cstdlib>
 #include <string>
-#include "Character.h"
 #include "time.h"
+
+#include "Character.h"
+#include "Species.h"
 
 using namespace std;
 
@@ -25,6 +27,7 @@ public:
     CharacterBuilder& SetName(string _name);
     CharacterBuilder& SetHitDice(int _hitDice);
     CharacterBuilder& SetLevel(int _level);
+    CharacterBuilder& SetSpecies(Species _species);
     Character Build();
 private:
     Character character;

@@ -50,6 +50,12 @@ CharacterBuilder& CharacterBuilder::SetLevel(int _level)
     return *this;
 }
 
+CharacterBuilder& CharacterBuilder::SetSpecies(Species _species)
+{
+    this->character.species = _species;
+    return *this;
+}
+
 Character CharacterBuilder::Build()
 {
     return this->character;

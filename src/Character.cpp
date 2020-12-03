@@ -88,3 +88,7 @@ string Character::GetCharacterStatus()
     return statusString;
 }
 
+string Character::GetSpeciesName()
+{
+    return this->species.GetName();
+}

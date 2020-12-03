@@ -14,6 +14,8 @@ Header file for a fantasy base character class
 #include <string>
 #include "time.h"
 
+#include "Species.h"
+
 using namespace std;
 
 enum CharacterStatus
@@ -36,6 +38,7 @@ public:
     int GetHP();
     int GetMaxHP();
     string GetCharacterStatus();
+    string GetSpeciesName();
 protected:
     string name;
     int damage;
@@ -48,6 +51,7 @@ protected:
     int wis_;
     int cha_;
 private:
+    Species species;
     int hitDice;
     int level;
     int hitPoints;

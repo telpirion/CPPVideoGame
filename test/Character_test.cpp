@@ -6,9 +6,12 @@ Version: 2020-11-29
 Unit tests for Character class in src/ folder.
 */
 #include "gtest/gtest.h"
-#include "Character.h"
 #include <iostream>
 #include <string>
+
+#include "Character.h"
+#include "CharacterBuilder.h"
+#include "Species.h"
 
 using namespace std;
 
@@ -20,15 +23,30 @@ protected:
     {
         this->c1 = new Character();
         this->c2 = new Character("Test", 6 /* HitDice */, 5 /* Level */);
+
+        Species species = Species {
+            "Test Species", "Test Species Description"
+        };
+
+        auto builder = CharacterBuilder {}
+            .SetName("Test Character 3")
+            .SetHitDice(10)
+            .SetLevel(2)
+            .SetSpecies(species);
+
+        Character cTemp = builder.Build();
+        this->c3 = &cTemp;
     }
 
     Character* c1;
     Character* c2;
+    Character* c3;
 
     void TearDown() override
     {
         this->c1 = nullptr;
         this->c2 = nullptr;
+        this->c3 = nullptr;
     }
 };
 
@@ -76,4 +94,13 @@ TEST_F(CharacterTest, setsNegativeHPToZero)
 
     string expectedStatus = "Unconscious";
     EXPECT_EQ(c1->GetCharacterStatus(), expectedStatus);
+}
+
+// Test complex character built from the CharacterBuilder
+TEST_F(CharacterTest, createsComplexCustomCharacter)
+{
+    string actualSpeciesName = c3->GetSpeciesName();
+    string expectedSpeciesName = "Test Species";
+
+    EXPECT_EQ(actualSpeciesName, expectedSpeciesName);
 }
