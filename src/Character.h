@@ -25,7 +25,7 @@ enum CharacterStatus
 
 class Character
 {
-    //friend CharacterBuilder;
+    friend class CharacterBuilder;
 public:
     Character();
     Character(string _name, int hitDice, int level);
@@ -48,6 +48,8 @@ protected:
     int wis_;
     int cha_;
 private:
+    int hitDice;
+    int level;
     int hitPoints;
     int maxHitPoints;
 };

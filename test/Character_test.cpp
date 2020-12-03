@@ -4,7 +4,6 @@ Author: Eric Schmidt
 Version: 2020-11-29
 
 Unit tests for Character class in src/ folder.
-
 */
 #include "gtest/gtest.h"
 #include "Character.h"

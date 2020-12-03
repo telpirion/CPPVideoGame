@@ -16,11 +16,15 @@ Character::Character()
     this->name = DEFAULT_NAME;
     this->hitPoints = DEFAULT_HIT_POINTS;
     this->status = ALIVE;
+    this->hitDice = 1;
+    this->level = 1;
 }
 
 Character::Character(string _name, int hitDice, int level) : Character()
 {
     this->name = _name;
+    this->hitDice = hitDice;
+    this->level = level;
 
     srand(time(NULL));
     for (int i = 0; i < level; i++)
@@ -63,6 +67,7 @@ int Character::GetMaxHP()
     return this->maxHitPoints;
 }
 
+// Translate CharacterStatus from enum to string
 string Character::GetCharacterStatus()
 {
     string statusString = "";
@@ -82,3 +87,4 @@ string Character::GetCharacterStatus()
     }
     return statusString;
 }
+
