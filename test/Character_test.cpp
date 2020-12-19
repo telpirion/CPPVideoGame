@@ -9,9 +9,15 @@ Unit tests for Character class in src/ folder.
 #include <iostream>
 #include <string>
 
-#include "Character.h"
-#include "CharacterBuilder.h"
-#include "Species.h"
+#ifdef USE_BAZEL
+#   include "src/Character.h"
+#   include "src/CharacterBuilder.h"
+#   include "src/Species.h"
+#else
+#   include "Character.h"
+#   include "CharacterBuilder.h"
+#   include "Species.h"
+#endif
 
 using namespace std;
 

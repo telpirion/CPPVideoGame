@@ -6,9 +6,15 @@ Version: 2020-11-29
 Unit tests for CharacterBuilder class in src/ folder.
 */
 #include "gtest/gtest.h"
-#include "CharacterBuilder.h"
-#include "Character.h"
 #include <string>
+
+#ifdef USE_BAZEL
+#   include "src/Character.h"
+#   include "src/CharacterBuilder.h"
+#else
+#   include "Character.h"
+#   include "CharacterBuilder.h"
+#endif
 
 using namespace std;
 

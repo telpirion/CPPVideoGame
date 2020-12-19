@@ -12,3 +12,7 @@ _deps
 build/
 extern/*/
 .DS_Store
+bazel-bin
+bazel-CPPVideoGame
+bazel-out
+bazel-testlogs

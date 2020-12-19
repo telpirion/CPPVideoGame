@@ -6,8 +6,13 @@ Version: 2020-12-01
 Unit tests for Species class in src/ folder.
 */
 #include "gtest/gtest.h"
-#include "Species.h"
-#include "Attributes.h"
+#ifdef USE_BAZEL
+#   include "src/Species.h"
+#   include "src/Attributes.h"
+#else
+#   include "Species.h"
+#   include "Attributes.h"
+#endif
 #include <string>
 
 using namespace std;
