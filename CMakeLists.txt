@@ -5,8 +5,10 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(app)
 include_directories(src)
+include_directories(extern/glfw-3.3.2/include)
 
 add_subdirectory(app)
 add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(extern/googletest)
+add_subdirectory(extern/glfw-3.3.2)
