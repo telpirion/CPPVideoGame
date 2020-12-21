@@ -6,13 +6,6 @@ file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
 
 # Add external third party libraries
 
-list(
-    APPEND
-    CMAKE_PREFIX_PATH
-    "${PROJECT_SOURCE_DIR}/extern"
-    "${PROJECT_SOURCE_DIR}/extern/*"
-)
-
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 
@@ -20,8 +13,6 @@ set(
     ALL_LIBS
     ${OPENGL_LIBRARY}
     ${GLUT_LIBRARY}
-    glfw
-    ${GLFW_LIBRARIES}
 )
 
 
