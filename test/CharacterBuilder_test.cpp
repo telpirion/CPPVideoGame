@@ -8,7 +8,7 @@ Unit tests for CharacterBuilder class in src/ folder.
 #include "gtest/gtest.h"
 #include <string>
 
-#ifdef USE_BAZEL
+#if defined(USE_BAZEL)
 #   include "src/Character.h"
 #   include "src/CharacterBuilder.h"
 #else

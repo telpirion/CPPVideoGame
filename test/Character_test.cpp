@@ -9,7 +9,7 @@ Unit tests for Character class in src/ folder.
 #include <iostream>
 #include <string>
 
-#ifdef USE_BAZEL
+#if defined(USE_BAZEL)
 #   include "src/Character.h"
 #   include "src/CharacterBuilder.h"
 #   include "src/Species.h"
@@ -107,6 +107,9 @@ TEST_F(CharacterTest, createsComplexCustomCharacter)
 {
     string actualSpeciesName = c3->GetSpeciesName();
     string expectedSpeciesName = "Test Species";
+    string actualName = c3->GetName();
+    string expectedName = "Test Character 3";
 
+    EXPECT_EQ(actualName, expectedName);
     EXPECT_EQ(actualSpeciesName, expectedSpeciesName);
 }
