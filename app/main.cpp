@@ -10,139 +10,153 @@ Entry point for the game.
 #include <string>
 #include <stdlib.h>
 #include <stdio.h>
+#include <vector>
 #include "Character.h"
+
+#if defined(__APPLE__)
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 using namespace std;
 
 void *font = GLUT_BITMAP_TIMES_ROMAN_24;
-void *fonts[] =
-{
-  GLUT_BITMAP_9_BY_15,
-  GLUT_BITMAP_TIMES_ROMAN_10,
-  GLUT_BITMAP_TIMES_ROMAN_24
-};
 char defaultMessage[] = "Enter your name ...";
+char defaultDirections[] = "";
 char *message = defaultMessage;
-string tmpMessage = "";
+char *directions = defaultDirections;
+bool isUserEdited = false;
+GLdouble width, height;
+int wd;
 
-void processNormalKeys(unsigned char key, int x, int y) {
+void init(void)
+{
+    width  = 1280.0;
+    height = 800.0;
+    return;
+}
 
-    if (key == 27)
+void setNewMessage(string tmpMessage)
+{
+    char *cstr = new char[tmpMessage.length() + 1];
+    strcpy(cstr, tmpMessage.c_str());
+    message = cstr;
+}
+
+void updateMessage(unsigned char key)
+{
+    if (!isUserEdited)
     {
-        exit(0);
+        isUserEdited = true;
+        *message = 0;
+    }
+
+    // Backspace (8) or Delete (127); delete a character
+    if ((key == 8) || (key == 127))
+    {
+        int msgLength = strlen(message);
+
+        // Verify that the message is longer than 0
+        if (msgLength > 0)
+        {
+            string tmpMessage(message);
+            tmpMessage = tmpMessage.erase(msgLength-1, 1);
+            setNewMessage(tmpMessage);
+        }
+
     }
     else
     {
         string s(1, key);
+        string tmpMessage(message);
         tmpMessage += s;
-        char *cstr = new char[tmpMessage.length() + 1];
-        strcpy(cstr, tmpMessage.c_str());
-        message = cstr;
+        setNewMessage(tmpMessage);
+
     }
 }
 
-void selectFont(int newfont)
-{
-    font = fonts[newfont];
-    glutPostRedisplay();
-}
-
-void selectMessage(int msg)
-{
-    switch (msg) {
-        case 1:
-            message = "abcdefghijklmnop";
-            break;
-        case 2:
-            message = "ABCDEFGHIJKLMNOP";
-            break;
-    }
-}
-
-void selectColor(int color)
-{
-    switch (color) {
-    case 1:
-        glColor3f(0.0, 1.0, 0.0);
-        break;
-    case 2:
-        glColor3f(1.0, 0.0, 0.0);
-        break;
-    case 3:
-        glColor3f(1.0, 1.0, 1.0);
-        break;
-    }
-    glutPostRedisplay();
-}
-
-void tick(void)
-{
-   glutPostRedisplay();
-}
-
-void output(int x, int y, char *string)
+void output(int x, int y, char *str)
 {
     int len, i;
 
     glRasterPos2f(x, y);
-    len = (int) strlen(string);
+    len = (int) strlen(str);
     for (i = 0; i < len; i++) {
-      glutBitmapCharacter(font, string[i]);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i]);
     }
 }
 
-void display()
+/* Callback functions for GLUT */
+void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    output(100, 24, "C++ Video Game!");
-    output(100, 100, message);
-    output(100, 145, "PRESS ESC TO QUIT");
+    output(100, 700, "C++ Video Game!");
+    output(100, 650, message);
+    output(100, 600, "PRESS ESC TO QUIT");
     glutSwapBuffers();
+    glFlush();
+    return;
 }
 
 void reshape(int w, int h)
 {
-    glViewport(0, 0, w, h);
+    //width = (GLdouble) w;
+    //height = (GLdouble) h;
+
+    // Use the whole window for drawing
+    //glViewport(0, 0, (GLsizei) width, (GLsizei) height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0, w, h, 0);
-    glMatrixMode(GL_MODELVIEW);
+    glOrtho(0.0, w, 0.0, h, -1.f, 1.f);
+
+    // Maintain constant width & height
+    glutReshapeWindow((int) width, (int) height);
+
+    return;
 }
 
-int main(int argc, char **argv)
+void processNormalKeys(unsigned char key, int x, int y)
 {
-    int i, msg_submenu, color_submenu;
+
+    // ESC key; exit the application
+    if (key == 27)
+    {
+        glutDestroyWindow(wd);
+        exit(0);
+    }
+    // Enter; accept the character's name
+    else if (key == 13)
+    {
+
+    }
+    else
+    {
+        updateMessage(key);
+    }
+}
+
+void tick(void)
+{
+    glutPostRedisplay();
+}
+
+int main(int argc, char *argv[])
+{
+    init();
 
     glutInit(&argc, argv);
-    for (i = 1; i < argc; i++) {
-      if (!strcmp(argv[i], "-mono")) {
-        font = GLUT_BITMAP_9_BY_15;
-      }
-    }
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(500, 500);
-    glutCreateWindow("GLUT bitmap font example");
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    glutDisplayFunc(display);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+    glutInitWindowSize((int) width, (int) height);
+    wd = glutCreateWindow("CPPVideoGame");
+
+    // Register event handlers
     glutReshapeFunc(reshape);
-    glutIdleFunc(tick);
-    /*
-    msg_submenu = glutCreateMenu(selectMessage);
-    glutAddMenuEntry("abc", 1);
-    glutAddMenuEntry("ABC", 2);
-    color_submenu = glutCreateMenu(selectColor);
-    glutAddMenuEntry("Green", 1);
-    glutAddMenuEntry("Red", 2);
-    glutAddMenuEntry("White", 3);
-    glutCreateMenu(selectFont);
-    glutAddMenuEntry("9 by 15", 0);
-    glutAddMenuEntry("Times Roman 10", 1);
-    glutAddMenuEntry("Times Roman 24", 2);
-    glutAddSubMenu("Messages", msg_submenu);
-    glutAddSubMenu("Color", color_submenu);
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
-    */
     glutKeyboardFunc(processNormalKeys);
+    glutDisplayFunc(display);
+    glutIdleFunc(tick);
+
     glutMainLoop();
-    return 0;
+
+    exit(0);
 }
