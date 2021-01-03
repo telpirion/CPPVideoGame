@@ -5,18 +5,21 @@ Version: 2020-11-29
 
 Entry point for the game.
 */
-#include <GLUT/glut.h>
 #include <iostream>
 #include <string>
-#include <stdlib.h>
 #include <stdio.h>
 #include <vector>
-#include "Character.h"
 
 #if defined(__APPLE__)
-#include <GLUT/glut.h>
+#   include <GLUT/glut.h>
 #else
-#include <GL/glut.h>
+#   include <GL/glut.h>
+#endif
+
+#if defined(USE_BAZEL)
+#   include "src/Character.h"
+#else
+#   include "Character.h"
 #endif
 
 using namespace std;
@@ -119,16 +122,20 @@ void reshape(int w, int h)
 void processNormalKeys(unsigned char key, int x, int y)
 {
 
+    cout << key << endl;
     // ESC key; exit the application
     if (key == 27)
     {
         glutDestroyWindow(wd);
         exit(0);
     }
-    // Enter; accept the character's name
+    // ENTER key; clear the screen
     else if (key == 13)
     {
-
+        cout << "Clearing screen!" << endl;
+        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        glutSwapBuffers();
+        glutPostRedisplay();
     }
     else
     {
