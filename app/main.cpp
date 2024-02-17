@@ -16,6 +16,8 @@ Entry point for the game.
 #   include <GL/glut.h>
 #endif
 
+#include "scene1.h"
+
 #if defined(USE_BAZEL)
 #   include "src/Character.h"
 #else
@@ -151,6 +153,7 @@ void tick(void)
 int main(int argc, char *argv[])
 {
     init();
+    RenderScene();
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
